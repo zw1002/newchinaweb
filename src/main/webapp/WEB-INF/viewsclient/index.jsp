@@ -2,6 +2,7 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    String backPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
 %>
 <html>
 <head>
@@ -175,7 +176,7 @@
                         for (var i = 0; i < data.res.length; i++) {
                             str += ' <li>\n' +
                                     '                                <a href="<%=basePath%>/trainMgr/toTrainDetails.do?tuid='+data.res[i].teruid+'">' +
-                                    '<img src="<%=basePath%>'+data.res[i].logoimg+'" /></a>\n' +
+                                    '<img src="<%=backPath%>'+data.res[i].logoimg+'" /></a>\n' +
                                     '                                <div class="txt_fr">\n' +
                                     '                                    <h2><a href="<%=basePath%>/trainMgr/toTrainDetails.do?tuid='+data.res[i].teruid+'">'+data.res[i].trainname+'</a></h2>\n' +
                                     '                                    <p>'+data.res[i].createtime.substr(0,10)+'</p>\n' +

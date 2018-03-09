@@ -2,6 +2,7 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    String backPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
     //String seachTxt=request.getAttribute("seachTxt").toString();
 %>
 <html>
@@ -94,7 +95,7 @@
                 for(var i=0;i<resultData.res.length;i++){
                     gridItems+="<li class=\"zy-art-item zy-xs-art-item zy-sm-art-item\">\n" +
                         "                            <a target=\"_blank\" class=\"zy-art-img\" href=\"<%=basePath%>/trainMgr/toTrainDetails.do?tuid="+resultData.res[i].teruid+"\">\n" +
-                        "                                <img class=\"layui-anim\" src=\"<%=basePath%>"+resultData.res[i].logoimg+"\">\n" +
+                        "                                <img class=\"layui-anim\" src=\"<%=backPath%>"+resultData.res[i].logoimg+"\">\n" +
                         "                            </a>\n" +
                         "                            <div class=\"zy-art-body\">\n" +
                         "                                <div class=\"zy-art-title\">\n" +
