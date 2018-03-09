@@ -35,7 +35,7 @@
 
         <div class="top_line">
             <div class="top_wid">
-                ${userinfo.getFristname()}     欢迎来到婚秀中国网哈哈哈哈
+                ${userinfo.getFristname()}     欢迎来到婚秀中国网
                 <!-- 登录前 -->
                 <div id="beferLogin" class="top_pos">
                     <a href="#" onclick="toLogin()">登录</a>|<a href="#" onclick="toRegister()">注册</a>
