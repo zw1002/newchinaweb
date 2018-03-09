@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FocusOtherMapper">
+  <resultMap id="BaseResultMap" type="FocusOther">
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="focus_userid" jdbcType="VARCHAR" property="focusUserid" />
+    <result column="focus_merchid" jdbcType="VARCHAR" property="focusMerchid" />
+    <result column="add_date" jdbcType="TIMESTAMP" property="addDate" />
+  </resultMap>
+
+  <insert id="addFocusOther" parameterType="pd">
+    insert into tb_focus_other (user_id, focus_userid, focus_merchid,
+      add_date)
+    values (#{userId,jdbcType=VARCHAR}, #{focusUserid,jdbcType=VARCHAR}, #{focusMerchid,jdbcType=VARCHAR}, 
+      #{addDate,jdbcType=TIMESTAMP})
+  </insert>
+  <!--获取用户被关注量-->
+  <select id="getFocusOtherForFocusId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    *
+    from tb_focus_other
+    where focus_userid = #{focusUserid,jdbcType=VARCHAR}
+  </select>
+  <!--获取用户关注信息-->
+  <select id="getFocusOtherForUserId" parameterType="pd" resultMap="BaseResultMap">
+    select
+    *
+    from tb_focus_other
+    where user_id = #{userid}
+    <if test="count != null and count != '0'">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+</mapper>

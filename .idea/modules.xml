@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://I:/chinawed/chinawedding.iml" filepath="I:/chinawed/chinawedding.iml" />
+      <module fileurl="file://I:/chinawedding/chinawedding.iml" filepath="I:/chinawedding/chinawedding.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chinaweddingserver.iml" filepath="$PROJECT_DIR$/chinaweddingserver.iml" />
+    </modules>
+  </component>
+</project>

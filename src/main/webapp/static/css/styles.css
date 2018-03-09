@@ -1,0 +1,60 @@
+	body {
+				font-family: "微软雅黑";
+			}
+			
+		
+			.mui-input-group{
+				margin: 30px auto;
+                width: 95%;
+			}
+			.mui-input-row label{
+				width: 20%;
+			}
+			.mui-input-row label~input, .mui-input-row label~select, .mui-input-row label~textarea{
+				width: 80%;
+			}
+			.mui-icon{
+				font-size: 28px;
+				margin-top: -6px;
+				color: #e94653;
+			}
+		
+			.mui-btn {
+				margin-top: 15px;
+				padding: 0px;
+				height: 30px;
+				border-radius: 50px;
+			}
+			
+			.zhanghu {
+				width: 220px;
+				margin: 0px auto;
+				margin-top: 25px;
+			}
+			
+			.zhanghu img {
+				position: relative;
+				width: 100%;
+			}
+			
+			 .mui-btn-primary{
+			 	border: 1px solid #ffffff;
+			 	background: #e94653;
+			 	height: 40px;
+			 }
+			  .mui-btn-primary:focus{
+			 	border: 1px solid #ffffff;
+			 	background: #d7303d;
+			 }
+			  .mui-btn-primary:active{
+			 	border: 1px solid #ffffff;
+			 	background: #d7303d;
+			 }
+			 
+			 .mui-btn-block{
+			 	    width: 90%;
+			 	    margin: 0px auto;
+			 }
+			 input{
+			 	color: #666;
+			 }

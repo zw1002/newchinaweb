@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SubmissionMapper">
+  <resultMap id="BaseResultMap" type="Submission">
+    <id column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="finduid" jdbcType="VARCHAR" property="finduid" />
+    <result column="worksname" jdbcType="VARCHAR" property="worksname" />
+    <result column="uptime" jdbcType="TIMESTAMP" property="uptime" />
+    <result column="samllurl" jdbcType="VARCHAR" property="samllurl" />
+    <result column="worksurl" jdbcType="VARCHAR" property="worksurl" />
+    <result column="watermakeurl" jdbcType="VARCHAR" property="watermakeurl" />
+    <result column="dpinum" jdbcType="VARCHAR" property="dpinum" />
+    <result column="imgsize" jdbcType="VARCHAR" property="imgsize" />
+    <result column="imgformart" jdbcType="VARCHAR" property="imgformart" />
+    <result column="colrmodel" jdbcType="VARCHAR" property="colrmodel" />
+    <result column="favcount" jdbcType="INTEGER" property="favcount" />
+    <result column="displayflag" jdbcType="VARCHAR" property="displayflag" />
+    <result column="delflag" jdbcType="VARCHAR" property="delflag" />
+    <result column="checkuser" jdbcType="VARCHAR" property="checkuser" />
+    <result column="chacktime" jdbcType="TIMESTAMP" property="chacktime" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="ticknums" jdbcType="INTEGER" property="ticknums" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, finduid, worksname, uptime, samllurl, worksurl, watermakeurl, dpinum, imgsize,
+    imgformart, colrmodel, favcount, displayflag, delflag, checkuser, chacktime, userid, 
+    ticknums,remark
+  </sql>
+  <select id="getSubmissionForId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_submission
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_submission
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="addSubmission" parameterType="pd">
+    insert into tb_submission (uid, finduid, worksname,
+      uptime, samllurl, worksurl, 
+      watermakeurl, dpinum, imgsize, 
+      imgformart, colrmodel, favcount, 
+      displayflag, delflag, checkuser, 
+      chacktime, userid, ticknums,remark
+      )
+    values (#{uid,jdbcType=VARCHAR}, #{finduid,jdbcType=VARCHAR}, #{worksname,jdbcType=VARCHAR}, 
+      #{uptime,jdbcType=TIMESTAMP}, #{samllurl,jdbcType=VARCHAR}, #{worksurl,jdbcType=VARCHAR}, 
+      #{watermakeurl,jdbcType=VARCHAR}, #{dpinum,jdbcType=VARCHAR}, #{imgsize,jdbcType=VARCHAR}, 
+      #{imgformart,jdbcType=VARCHAR}, #{colrmodel,jdbcType=VARCHAR}, #{favcount,jdbcType=INTEGER}, 
+      #{displayflag,jdbcType=VARCHAR}, #{delflag,jdbcType=VARCHAR}, #{checkuser,jdbcType=VARCHAR}, 
+      #{chacktime,jdbcType=TIMESTAMP}, #{userid,jdbcType=VARCHAR}, #{ticknums,jdbcType=INTEGER}
+      , #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateSubmission" parameterType="pd">
+    update tb_submission
+    set finduid = #{finduid,jdbcType=VARCHAR},
+      worksname = #{worksname,jdbcType=VARCHAR},
+      uptime = #{uptime,jdbcType=TIMESTAMP},
+      worksurl = #{worksurl,jdbcType=VARCHAR},
+      imgsize = #{imgsize,jdbcType=VARCHAR},
+      imgformart = #{imgformart,jdbcType=VARCHAR},
+      colrmodel = #{colrmodel,jdbcType=VARCHAR},
+      favcount = #{favcount,jdbcType=INTEGER},
+      displayflag = #{displayflag,jdbcType=VARCHAR},
+      delflag = #{delflag,jdbcType=VARCHAR},
+      checkuser = #{checkuser,jdbcType=VARCHAR},
+      chacktime = #{chacktime,jdbcType=TIMESTAMP},
+      userid = #{userid,jdbcType=VARCHAR},
+      ticknums = #{ticknums,jdbcType=INTEGER},
+      remark =#{remark,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <!--通过任务ID查询所有Submission-->
+  <select id="getSubmissionByGraphId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_submission
+    where finduid = #{finduid,jdbcType=VARCHAR}
+  </select>
+</mapper>

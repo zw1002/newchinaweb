@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DealuidchildMapper">
+  <resultMap id="BaseResultMap" type="Dealuidchild">
+    <result column="dealuid" jdbcType="VARCHAR" property="dealuid" />
+    <result column="worksid" jdbcType="VARCHAR" property="worksid" />
+    <result column="worksprice" jdbcType="DECIMAL" property="worksprice" />
+    <result column="worksname" jdbcType="VARCHAR" property="worksname" />
+    <result column="merchid" jdbcType="VARCHAR" property="merchid" />
+    <result column="merchname" jdbcType="VARCHAR" property="merchname" />
+    <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="payuserid" jdbcType="VARCHAR" property="payuserid" />
+  </resultMap>
+  <insert id="addDealuidchild" parameterType="pd">
+    insert into tb_dealuidchild (dealuid, worksid, worksprice,
+      worksname, merchid, merchname, 
+      addtime, payuserid)
+    values (#{dealuid,jdbcType=VARCHAR}, #{worksid,jdbcType=VARCHAR}, #{worksprice,jdbcType=DECIMAL}, 
+      #{worksname,jdbcType=VARCHAR}, #{merchid,jdbcType=VARCHAR}, #{merchname,jdbcType=VARCHAR}, 
+      #{addtime,jdbcType=TIMESTAMP}, #{payuserid,jdbcType=VARCHAR})
+  </insert>
+  <!--首页交易动态查询-->
+  <select id="selectDealuidchildList" resultMap="BaseResultMap">
+    select *
+    from tb_dealuidchild
+    where 1=1
+    <if test="uid != null and uid != ''">
+      and worksid in (
+      select uid from tb_works where merchid =(
+      select uid from tb_merch where userinfouid = #{uid})
+      )
+    </if>
+    order by addtime desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--交易排行榜-->
+  <select id="getDealuidchildForRankings" parameterType="pd" resultMap="BaseResultMap">
+      select * from tb_dealuidchild where worksid in(
+      select uid from tb_works where workstype like '0%' or workstype like '1%' or workstype like '2%'
+      ) group by worksid order by COUNT(worksid) desc
+      <if test="count != null and count != 0">
+        LIMIT #{offset},#{count}
+      </if>
+  </select>
+  <!--婚秀排行榜-->
+  <select id="transactionRankings" parameterType="pd" resultMap="BaseResultMap">
+    select * from tb_dealuidchild where worksid in(
+    select uid from tb_works where workstype like '3%'
+    ) group by worksid order by COUNT(worksid) desc
+    <if test="count != null and count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--获取个人已出售作品-->
+  <select id="getDealuidchildForWorksId" parameterType="pd" resultMap="BaseResultMap">
+    select
+    *
+    from tb_dealuidchild
+    where worksid in(
+    select uid from tb_works
+    where merchid = (
+    select uid from tb_merch
+    where userinfouid = #{userid}
+    )
+    )
+    and
+    dealuid in(
+    select dealuid from tb_dealrecord where dealstate = '1'
+    )
+    order by addtime desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--获取个人已购买作品-->
+  <select id="getDealuidchildForPayUserId" parameterType="pd" resultMap="BaseResultMap">
+    select
+    *
+    from tb_dealuidchild
+    where dealuid in(
+    select dealuid from tb_dealrecord where dealstate = '1' and payuserid =#{userid}
+    )
+    order by addtime desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--统计个人店铺交易额-->
+  <select id="getUserTurnover" parameterType="java.lang.String" resultType="map">
+    select SUM(worksprice) as turnover from tb_dealuidchild
+    where worksid in(
+    select uid from tb_works where merchid =(
+    select uid from tb_merch
+    where userinfouid = #{userinfouid,jdbcType=VARCHAR}
+    )
+    )
+  </select>
+</mapper>

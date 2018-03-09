@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserinfoMapper">
+  <resultMap id="BaseResultMap" type="Userinfo">
+    <id column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="fristname" jdbcType="VARCHAR" property="fristname" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="iccode" jdbcType="VARCHAR" property="iccode" />
+    <result column="usrpicurl" jdbcType="VARCHAR" property="usrpicurl" />
+    <result column="idpic" jdbcType="VARCHAR" property="idpic" />
+    <result column="idpicback" jdbcType="VARCHAR" property="idpicback" />
+    <result property="smname" jdbcType="VARCHAR" column="smname" />
+    <result property="email" jdbcType="VARCHAR" column="email" />
+    <result property="qqid" jdbcType="VARCHAR" column="qqid" />
+    <result property="msnid" jdbcType="VARCHAR" column="msnid" />
+    <result property="ofphone" jdbcType="VARCHAR" column="ofphone" />
+    <result property="zhiye" jdbcType="VARCHAR" column="zhiye" />
+    <result property="label" jdbcType="VARCHAR" column="label" />
+    <result property="address" jdbcType="VARCHAR" column="address" />
+    <result property="weibo" jdbcType="VARCHAR" column="weibo" />
+    <result property="bankcode" jdbcType="VARCHAR" column="bankcode" />
+    <result property="bankaddr" jdbcType="VARCHAR" column="bankaddr" />
+    <result property="sex" jdbcType="VARCHAR" column="sex" />
+    <result property="sfzdate" jdbcType="VARCHAR" column="sfzdate" />
+    <result property="bidnums" jdbcType="INTEGER" column="bidnums" />
+    <result property="winningbid" jdbcType="DOUBLE" column="winningbid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, fristname, telephone, iccode, usrpicurl,idpic, idpicback,smname,email,qqid,msnid,
+    ofphone,zhiye,label,address,weibo,bankcode,bankaddr,sfzdate,sex,bidnums,winningbid
+  </sql>
+  <select id="getUserinfoForId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_userinfo
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_userinfo
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="addUserinfo" parameterType="pd">
+    insert into tb_userinfo (uid
+    <if test="fristname != null">   , fristname  </if>
+    <if test="telephone != null">      ,telephone    </if>
+    <if test="iccode != null">      ,iccode     </if>
+    <if test="usrpicurl != null">      ,usrpicurl   </if>
+    <if test="idpic != null">      ,idpic    </if>
+    <if test="idpicback != null">      ,idpicback    </if>
+    <if test="smname != null">      ,smname     </if>
+    <if test="email != null and email!=''" >      ,email     </if>
+    <if test="qqid != null">      ,qqid     </if>
+    <if test="msnid != null">      ,msnid     </if>
+    <if test="ofphone != null">      ,ofphone    </if>
+    <if test="zhiye != null">      ,zhiye    </if>
+    <if test="label != null">      ,label     </if>
+    <if test="address != null">      ,address     </if>
+    <if test="weibo != null">      ,weibo     </if>
+    <if test="bankcode != null">      ,bankcode    </if>
+    <if test="bankaddr != null">      ,bankaddr    </if>
+    <if test="sex != null">      ,sex    </if>
+    <if test="sfzdate != null">      ,sfzdate    </if>
+    <if test="sfzdate != null">      ,bidnums    </if>
+    <if test="sfzdate != null">      ,winningbid    </if>
+    )
+    values (#{uid,jdbcType=VARCHAR}
+    <if test="fristname != null">      ,#{fristname,jdbcType=VARCHAR}   </if>
+    <if test="telephone != null">       ,#{telephone,jdbcType=VARCHAR}   </if>
+    <if test="iccode != null">       ,#{iccode,jdbcType=VARCHAR}    </if>
+    <if test="usrpicurl != null">       ,#{usrpicurl,jdbcType=VARCHAR}    </if>
+    <if test="idpic != null">       ,#{idpic,jdbcType=VARCHAR}    </if>
+    <if test="idpicback != null">       ,#{idpicback,jdbcType=VARCHAR}    </if>
+    <if test="smname != null">       ,#{smname,jdbcType=VARCHAR}    </if>
+    <if test="email != null and email!=''" >       ,#{email,jdbcType=VARCHAR}    </if>
+    <if test="qqid != null">       ,#{qqid,jdbcType=VARCHAR}    </if>
+    <if test="msnid != null">       ,#{msnid,jdbcType=VARCHAR}    </if>
+    <if test="ofphone != null">       ,#{ofphone,jdbcType=VARCHAR}    </if>
+    <if test="zhiye != null">       ,#{zhiye,jdbcType=VARCHAR}    </if>
+    <if test="label != null">       ,#{label,jdbcType=VARCHAR}    </if>
+    <if test="address != null">      , #{address,jdbcType=VARCHAR}    </if>
+    <if test="weibo != null">      , #{weibo,jdbcType=VARCHAR}   </if>
+    <if test="bankcode != null">      , #{bankcode,jdbcType=VARCHAR}   </if>
+    <if test="bankaddr != null">     ,  #{bankaddr,jdbcType=VARCHAR}   </if>
+    <if test="sex != null">       ,#{sex,jdbcType=VARCHAR}    </if>
+    <if test="sfzdate != null">      , #{sfzdate,jdbcType=VARCHAR}    </if>
+    <if test="sfzdate != null">      , #{bidnums,jdbcType=INTEGER}    </if>
+    <if test="sfzdate != null">      , #{winningbid,jdbcType=DOUBLE}    </if>
+    )
+  </insert>
+  <update id="updateUserinfo" parameterType="pd">
+    update tb_userinfo
+    <set>
+      <if test="fristname != null">
+        fristname = #{fristname,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="iccode != null">
+        iccode = #{iccode,jdbcType=VARCHAR},
+      </if>
+      <if test="usrpicurl != null">
+        usrpicurl = #{usrpicurl,jdbcType=VARCHAR},
+      </if>
+      <if test="idpic != null">
+        idpic = #{idpic,jdbcType=VARCHAR},
+      </if>
+      <if test="idpicback != null">
+        idpicback = #{idpicback,jdbcType=VARCHAR},
+      </if>
+      <if test="smname != null">
+        smname = #{smname,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null and email!=''" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="qqid != null">
+        qqid = #{qqid,jdbcType=VARCHAR},
+      </if>
+      <if test="msnid != null">
+        msnid = #{msnid,jdbcType=VARCHAR},
+      </if>
+      <if test="ofphone != null">
+        ofphone = #{ofphone,jdbcType=VARCHAR},
+      </if>
+      <if test="zhiye != null">
+        zhiye = #{zhiye,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null">
+        label = #{label,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="weibo != null">
+        weibo = #{weibo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankcode != null">
+        bankcode = #{bankcode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankaddr != null">
+        bankaddr = #{bankaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="sfzdate != null">
+        sfzdate = #{sfzdate,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <!--登录时通过帐号密码查找用户-->
+  <select id="getUserInfo" parameterType="pd" resultMap="BaseResultMap">
+    select * from tb_userinfo where uid in (
+    select userid from tb_account  where account = #{account,jdbcType=VARCHAR} and passwd = #{passwd,jdbcType=VARCHAR}
+    )
+  </select>
+  <select id="getUserInfoForUid" parameterType="pd" resultMap="BaseResultMap">
+    select * from tb_userinfo where uid in (
+    select userid from tb_account  where userid = #{userid,jdbcType=VARCHAR} and passwd = #{passwd,jdbcType=VARCHAR}
+    )
+  </select>
+  <update id="restPassword" parameterType="pd">
+    update tb_account
+    set passwd = #{passwd,jdbcType=VARCHAR}
+    where userid = #{userid,jdbcType=VARCHAR}
+  </update>
+  <!--查询优秀投稿用户-->
+  <select id="getSubmissionUser" parameterType="pd" resultMap="BaseResultMap">
+    select * from tb_userinfo
+    where bidnums != '0'
+    order by bidnums desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--修改中标数据-->
+  <update id="updateUserinfoForWinningBid" parameterType="pd">
+    update tb_userinfo
+    set bidnums = #{bidnums},
+    winningbid = #{winningbid}
+    where uid = #{uid}
+  </update>
+  <!--根据账号获取用户信息-->
+  <select id="getUserInfoByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from tb_userinfo where uid=(
+    select userid from tb_account  where account = #{account,jdbcType=VARCHAR}
+    )
+  </select>
+</mapper>

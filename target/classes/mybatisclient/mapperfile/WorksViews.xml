@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WorksViewsMapper">
+    <resultMap id="BaseResultMap" type="WorksViews">
+        <result property="user_id"  jdbcType="VARCHAR"  column="user_id" />
+        <result property="user_name"  jdbcType="VARCHAR" column="user_name" />
+        <result property="worksid" jdbcType="VARCHAR" column="worksid" />
+        <result property="viewtime" jdbcType="VARCHAR" column="viewtime" />
+        <result property="viewip" jdbcType="VARCHAR" column="viewip" />
+    </resultMap>
+    <select id="selectWorksViews" parameterType="pd" resultMap="BaseResultMap">
+        select DISTINCT worksid
+        from tb_worksviews
+        where user_id= #{userid}
+        order by viewtime desc
+        <if test="count != 0">
+            LIMIT #{offset},#{count}
+        </if>
+    </select>
+    <delete id="deleteWorksViewsByFid" parameterType="pd">
+        delete from tb_worksviews
+        where user_id = #{user_id,jdbcType=VARCHAR} AND worksid = #{worksid,jdbcType=VARCHAR}
+    </delete>
+    <!--添加作品浏览足迹记录-->
+    <update id="addWorksViewlog" parameterType="pd">
+        insert into tb_worksviews
+        (
+        user_id,
+        user_name,
+        worksid,
+        viewtime,
+        viewip
+        )
+        values(
+        #{user_id ,jdbcType=VARCHAR},
+        #{user_name,jdbcType=VARCHAR},
+        #{worksid,jdbcType=VARCHAR},
+        #{viewtime,jdbcType=VARCHAR},
+        #{viewip,jdbcType=VARCHAR}
+        )
+    </update>
+</mapper>

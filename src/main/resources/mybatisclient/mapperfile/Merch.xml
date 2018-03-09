@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MerchMapper">
+  <resultMap id="BaseResultMap" type="Merch">
+    <id column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="merchname" jdbcType="VARCHAR" property="merchname" />
+    <result column="userinfouid" jdbcType="VARCHAR" property="userinfouid" />
+    <result column="bondvalue" jdbcType="INTEGER" property="bondvalue" />
+    <result column="builddatetime" jdbcType="TIMESTAMP" property="builddatetime" />
+    <result column="merchscroe" jdbcType="DOUBLE" property="merchscroe" />
+    <result column="statu" jdbcType="SMALLINT" property="statu" />
+    <result column="cycle" jdbcType="VARCHAR" property="cycle" />
+    <result column="worksnums" jdbcType="INTEGER" property="worksnums" />
+    <result column="dealnums" jdbcType="INTEGER" property="dealnums" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, merchname, userinfouid, bondvalue, builddatetime, merchscroe, statu, cycle,
+    worksnums, dealnums, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_merch
+    where uid = #{fid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_merch
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="addMerch" parameterType="pd">
+    insert into tb_merch (uid, merchname, userinfouid,
+      bondvalue, builddatetime, merchscroe, 
+      statu, cycle, worksnums, 
+      dealnums, remark)
+    values (#{uid,jdbcType=VARCHAR}, #{merchname,jdbcType=VARCHAR}, #{userinfouid,jdbcType=VARCHAR}, 
+      #{bondvalue,jdbcType=INTEGER}, #{builddatetime,jdbcType=TIMESTAMP}, #{merchscroe,jdbcType=DOUBLE},
+      #{statu,jdbcType=SMALLINT}, #{cycle,jdbcType=VARCHAR}, #{worksnums,jdbcType=INTEGER}, 
+      #{dealnums,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hnqj.model.Merch">
+    update tb_merch
+    set merchname = #{merchname,jdbcType=VARCHAR},
+      userinfouid = #{userinfouid,jdbcType=VARCHAR},
+      bondvalue = #{bondvalue,jdbcType=INTEGER},
+      builddatetime = #{builddatetime,jdbcType=TIMESTAMP},
+      merchscroe = #{merchscroe,jdbcType=DOUBLE},
+      statu = #{statu,jdbcType=SMALLINT},
+      cycle = #{cycle,jdbcType=VARCHAR},
+      worksnums = #{worksnums,jdbcType=INTEGER},
+      dealnums = #{dealnums,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <!--通过会员ID查询店铺信息-->
+  <select id="getMerchForUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_merch
+    where userinfouid = #{userinfouid,jdbcType=VARCHAR}
+  </select>
+  <!--修改店铺交易量和积分-->
+  <update id="updateWorkDealCount" parameterType="pd">
+    update tb_merch
+    set merchscroe = #{merchscroe},
+    dealnums = #{dealnums}
+    where uid = #{uid}
+  </update>
+  <!--修改店铺作品量-->
+  <update id="updateWorkNums" parameterType="pd">
+    update tb_merch
+    set worksnums = #{worksnums}
+    where uid = #{uid}
+  </update>
+  <update id="updateMerchMsg" parameterType="pd">
+    update tb_merch
+    set merchname = #{merchname},
+    remark = #{remark},
+    statu = '0'
+    where uid = #{uid}
+  </update>
+</mapper>

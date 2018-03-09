@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ShoppingcartMapper">
+  <resultMap id="BaseResultMap" type="Shoppingcart">
+    <id column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="workid" jdbcType="VARCHAR" property="workid" />
+    <result column="workprice" jdbcType="REAL" property="workprice" />
+    <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, userid, workid, workprice, addtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_shoppingcart
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteShoppingcartByFid" parameterType="java.lang.String">
+    delete from tb_shoppingcart
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="addShoppingcart" parameterType="pd">
+    insert into tb_shoppingcart (uid, userid, workid,
+      workprice, addtime)
+    values (#{uid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{workid,jdbcType=VARCHAR}, 
+      #{workprice,jdbcType=REAL}, #{addtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hnqj.model.Shoppingcart">
+    update tb_shoppingcart
+    set userid = #{userid,jdbcType=VARCHAR},
+      workid = #{workid,jdbcType=VARCHAR},
+      workprice = #{workprice,jdbcType=REAL},
+      addtime = #{addtime,jdbcType=TIMESTAMP}
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <!--获取个人购物车数据-->
+  <select id="getShoppingcartForUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_shoppingcart
+    where userid = #{userid,jdbcType=VARCHAR}
+    order by addtime desc
+  </select>
+  <!--删除购物车已付款作品数据-->
+  <delete id="delShoppingcartByUseridAndWorkid" parameterType="pd">
+    delete from tb_shoppingcart
+    where userid = #{userid} and workid = #{workid}
+  </delete>
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CollectionsMapper">
+  <resultMap id="BaseResultMap" type="Collections">
+    <id column="collectionuid" jdbcType="VARCHAR" property="collectionuid" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="worksid" jdbcType="VARCHAR" property="worksid" />
+    <result column="collectiontime" jdbcType="TIMESTAMP" property="collectiontime" />
+    <result column="collectionflag" jdbcType="VARCHAR" property="collectionflag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    collectionuid, userid, worksid, collectiontime, collectionflag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_collection
+    where collectionuid = #{collectionuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_collection
+    where collectionuid = #{collectionuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByUidAndWorksid" parameterType="java.lang.String">
+    delete from tb_collection
+    where userid = #{userid,jdbcType=VARCHAR} and worksid=#{worksid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="pd">
+    insert into tb_collection (collectionuid, userid, worksid,
+      collectiontime, collectionflag)
+    values (#{collectionuid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{worksid,jdbcType=VARCHAR}, 
+      #{collectiontime,jdbcType=TIMESTAMP}, #{collectionflag,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="pd">
+    update tb_collection
+    set userid = #{userid,jdbcType=VARCHAR},
+      worksid = #{worksid,jdbcType=VARCHAR},
+      collectiontime = #{collectiontime,jdbcType=TIMESTAMP},
+      collectionflag = #{collectionflag,jdbcType=VARCHAR}
+    where collectionuid = #{collectionuid,jdbcType=VARCHAR}
+  </update>
+  <!--获取个人收藏作品-->
+  <select id="selectCollectionByUserId" parameterType="pd" resultMap="BaseResultMap">
+    select
+    *
+    from tb_collection
+    where userid = #{userid,jdbcType=VARCHAR} and collectionflag = '0'
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--取消收藏-->
+  <update id="delCollection" parameterType="pd">
+    update tb_collection
+    set collectionflag = '1'
+    where userid = #{userid} and worksid = #{workid}
+  </update>
+</mapper>

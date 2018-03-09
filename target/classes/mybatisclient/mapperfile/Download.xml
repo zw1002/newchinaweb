@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DownloadMapper">
+  <resultMap id="BaseResultMap" type="Download">
+    <id column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="payuserid" jdbcType="VARCHAR" property="payuserid" />
+    <result column="workid" jdbcType="VARCHAR" property="workid" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="workname" jdbcType="VARCHAR" property="workname" />
+    <result column="paydate" jdbcType="TIMESTAMP" property="paydate" />
+    <result column="merchid" jdbcType="VARCHAR" property="merchid" />
+    <result column="merchname" jdbcType="VARCHAR" property="merchname" />
+    <result column="smallurl" jdbcType="VARCHAR" property="smallurl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, payuserid, workid, price, workname, paydate,merchid,merchname,smallurl
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pt_download
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from pt_download
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="addDownload" parameterType="pd">
+    insert into pt_download (uid, payuserid, workid,
+      price, workname, paydate,merchid,merchname,smallurl
+      )
+    values (#{uid,jdbcType=VARCHAR}, #{payuserid,jdbcType=VARCHAR}, #{workid,jdbcType=VARCHAR}, 
+      #{price,jdbcType=VARCHAR}, #{workname,jdbcType=VARCHAR}, #{paydate,jdbcType=TIMESTAMP},
+      #{merchid,jdbcType=VARCHAR}, #{merchname,jdbcType=VARCHAR}, #{smallurl,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="pd">
+    update pt_download
+    set payuserid = #{payuserid,jdbcType=VARCHAR},
+      workid = #{workid,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR},
+      workname = #{workname,jdbcType=VARCHAR},
+      merchid =#{merchid,jdbcType=VARCHAR},
+      merchname =#{merchname,jdbcType=VARCHAR},
+      smallurl =#{smallurl,jdbcType=VARCHAR},
+      paydate = #{paydate,jdbcType=TIMESTAMP}
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <!--查询个人所有Download-->
+  <select id="selectDownloadListByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pt_download
+    where payuserid = #{userid}
+    order by paydate desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+</mapper>

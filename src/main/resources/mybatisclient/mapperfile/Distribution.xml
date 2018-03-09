@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DistributionMapper">
+  <resultMap id="BaseResultMap" type="Distribution">
+    <id column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+    <result column="userseltid" jdbcType="VARCHAR" property="userseltid" />
+    <result column="distprod" jdbcType="VARCHAR" property="distprod" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, parentid, userseltid, distprod
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_distribution
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_distribution
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="addDistribution" parameterType="pd">
+    insert into tb_distribution (uid, parentid, userseltid,
+      distprod)
+    values (#{uid,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, #{userseltid,jdbcType=VARCHAR}, 
+      #{distprod,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="pd">
+    update tb_distribution
+    set parentid = #{parentid,jdbcType=VARCHAR},
+      userseltid = #{userseltid,jdbcType=VARCHAR},
+      distprod = #{distprod,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <!--获取当前登录用户的推荐用户信息-->
+  <select id="getDistributionByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_distribution
+    where userseltid = #{userseltid,jdbcType=VARCHAR}
+  </select>
+</mapper>

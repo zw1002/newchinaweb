@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PlayimgMapper">
+  <resultMap id="BaseResultMap" type="Playimg">
+    <id column="playuid" jdbcType="VARCHAR" property="playuid" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
+    <result column="playsort" jdbcType="INTEGER" property="playsort" />
+    <result column="navurl" jdbcType="VARCHAR" property="navurl" />
+    <result column="playtype" jdbcType="VARCHAR" property="playtype" />
+    <result column="typeremark" jdbcType="VARCHAR" property="typeremark" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="delflg" jdbcType="CHAR" property="delflg" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    playuid, createtime, imgurl, playsort, navurl, playtype, typeremark, creator, delflg
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_playimg
+    where playuid = #{playuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_playimg
+    where playuid = #{playuid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hnqj.model.Playimg">
+    insert into tb_playimg (playuid, createtime, imgurl,
+      playsort, navurl, playtype, 
+      typeremark, creator, delflg
+      )
+    values (#{playuid,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{imgurl,jdbcType=VARCHAR}, 
+      #{playsort,jdbcType=INTEGER}, #{navurl,jdbcType=VARCHAR}, #{playtype,jdbcType=VARCHAR}, 
+      #{typeremark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{delflg,jdbcType=CHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hnqj.model.Playimg">
+    update tb_playimg
+    set createtime = #{createtime,jdbcType=TIMESTAMP},
+      imgurl = #{imgurl,jdbcType=VARCHAR},
+      playsort = #{playsort,jdbcType=INTEGER},
+      navurl = #{navurl,jdbcType=VARCHAR},
+      playtype = #{playtype,jdbcType=VARCHAR},
+      typeremark = #{typeremark,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      delflg = #{delflg,jdbcType=CHAR}
+    where playuid = #{playuid,jdbcType=VARCHAR}
+  </update>
+  <!--首页轮播图查询-->
+  <select id="selectPlayimgList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_playimg
+    order by playsort asc
+  </select>
+</mapper>

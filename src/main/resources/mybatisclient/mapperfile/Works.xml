@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WorksMapper">
+  <resultMap id="BaseResultMap" type="Works">
+    <id column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="workstype" jdbcType="VARCHAR" property="workstype" />
+    <result column="worksname" jdbcType="VARCHAR" property="worksname" />
+    <result column="uptime" jdbcType="TIMESTAMP" property="uptime" />
+    <result column="samllurl" jdbcType="VARCHAR" property="samllurl" />
+    <result column="worksurl" jdbcType="VARCHAR" property="worksurl" />
+    <result column="watermakeurl" jdbcType="VARCHAR" property="watermakeurl" />
+    <result column="dpinum" jdbcType="VARCHAR" property="dpinum" />
+    <result column="imgsize" jdbcType="VARCHAR" property="imgsize" />
+    <result column="imgformart" jdbcType="VARCHAR" property="imgformart" />
+    <result column="colrmodel" jdbcType="VARCHAR" property="colrmodel" />
+    <result column="downcount" jdbcType="INTEGER" property="downcount" />
+    <result column="favcount" jdbcType="INTEGER" property="favcount" />
+    <result column="displayflag" jdbcType="VARCHAR" property="displayflag" />
+    <result column="delflag" jdbcType="VARCHAR" property="delflag" />
+    <result column="checkuser" jdbcType="VARCHAR" property="checkuser" />
+    <result column="chacktime" jdbcType="TIMESTAMP" property="chacktime" />
+    <result column="merchid" jdbcType="VARCHAR" property="merchid" />
+    <result column="ticknums" jdbcType="INTEGER" property="ticknums" />
+    <result column="oknums" jdbcType="INTEGER" property="oknums" />
+    <result column="workremark" jdbcType="VARCHAR" property="workremark" />
+    <result column="worklabel" jdbcType="VARCHAR" property="worklabel" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, workstype, worksname, uptime, samllurl, worksurl, watermakeurl, dpinum, imgsize,
+    imgformart, colrmodel, downcount, favcount, displayflag, delflag, checkuser, chacktime, 
+    merchid, ticknums, oknums, workremark, worklabel, price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteWorksByFid" parameterType="java.lang.String">
+    delete from tb_works
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="addWorks" parameterType="pd">
+    insert into tb_works (uid, workstype, worksname,
+      uptime, samllurl, worksurl, 
+      watermakeurl, dpinum, imgsize, 
+      imgformart, colrmodel, downcount, 
+      favcount, displayflag, delflag, 
+      checkuser, chacktime, merchid, 
+      ticknums, oknums, workremark, 
+      worklabel, price)
+    values (#{uid,jdbcType=VARCHAR}, #{workstype,jdbcType=VARCHAR}, #{worksname,jdbcType=VARCHAR}, 
+      #{uptime,jdbcType=TIMESTAMP}, #{samllurl,jdbcType=VARCHAR}, #{worksurl,jdbcType=VARCHAR}, 
+      #{watermakeurl,jdbcType=VARCHAR}, #{dpinum,jdbcType=VARCHAR}, #{imgsize,jdbcType=VARCHAR},
+      #{imgformart,jdbcType=VARCHAR}, #{colrmodel,jdbcType=VARCHAR}, #{downcount,jdbcType=INTEGER}, 
+      #{favcount,jdbcType=INTEGER}, #{displayflag,jdbcType=VARCHAR}, #{delflag,jdbcType=VARCHAR}, 
+      #{checkuser,jdbcType=VARCHAR}, #{chacktime,jdbcType=TIMESTAMP}, #{merchid,jdbcType=VARCHAR}, 
+      #{ticknums,jdbcType=INTEGER}, #{oknums,jdbcType=INTEGER}, #{workremark,jdbcType=VARCHAR}, 
+      #{worklabel,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="pd">
+    update tb_works
+    set workstype = #{workstype,jdbcType=VARCHAR},
+      worksname = #{worksname,jdbcType=VARCHAR},
+      uptime = #{uptime,jdbcType=TIMESTAMP},
+      worksurl = #{worksurl,jdbcType=VARCHAR},
+      imgsize = #{imgsize,jdbcType=VARCHAR},
+      imgformart = #{imgformart,jdbcType=VARCHAR},
+      colrmodel = #{colrmodel,jdbcType=VARCHAR},
+      downcount = #{downcount,jdbcType=INTEGER},
+      favcount = #{favcount,jdbcType=INTEGER},
+      displayflag = #{displayflag,jdbcType=VARCHAR},
+      delflag = #{delflag,jdbcType=VARCHAR},
+      checkuser = #{checkuser,jdbcType=VARCHAR},
+      chacktime = #{chacktime,jdbcType=TIMESTAMP},
+      merchid = #{merchid,jdbcType=VARCHAR},
+      ticknums = #{ticknums,jdbcType=INTEGER},
+      oknums = #{oknums,jdbcType=INTEGER},
+      workremark = #{workremark,jdbcType=VARCHAR},
+      worklabel = #{worklabel,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL}
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <!--设计等推荐通用接口-->
+  <select id="getWorksForTypeAndCount" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where workstype in(
+    select keyvalue from tb_dict where parentid=(
+    select uid from tb_dict where keyvalue = #{type}
+    )
+    )
+    order by downcount desc
+    <if test="count != null and count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--会员作品推荐-->
+  <select id="getWorksForMerchId" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where merchid = #{merchid}
+    order by downcount desc
+    <if test="count != null and count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--会员空间获取个人作品-->
+  <select id="getWorksForUserId" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where merchid = (
+    select uid from tb_merch where userinfouid = #{userid}
+    )
+    order by downcount desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--会员近三个月热卖-->
+  <select id="getWorksForUserBestSellers" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where uid in (
+    select worksid from tb_dealuidchild where worksid in(
+    select uid from tb_works
+    where merchid=(
+    select uid from tb_merch
+    where userinfouid = #{userid}
+    ) ) and addtime between #{defaultStartDate} and #{defaultEndDate})
+    order by downcount desc
+    <if test="count != null and count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--会员最新作品推荐-->
+  <select id="getWorksForUserIdAndTime" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where merchid = (
+    select uid from tb_merch where userinfouid = #{userid}
+    )
+    order by uptime desc
+    <if test="count != null and count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--个人中心分类获取个人作品-->
+  <select id="getPersonWorksByType" parameterType="pd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where merchid = (
+    select uid from tb_merch where userinfouid = #{userid}
+    )
+    and workstype in(
+    select keyvalue from tb_dict where parentid =(
+    select uid from tb_dict where keyvalue = #{type}
+    )
+    )
+    order by downcount desc
+    <if test="count != 0">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--作品搜索接口 statementType="STATEMENT"-->
+  <select id="serchWorks" parameterType="pd" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_works
+    where displayflag=&apos;2&apos;
+    <if test="data != null and data != ''">
+      AND worksname LIKE CONCAT(CONCAT('%', #{data, jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="labels != null and labels != ''">
+       OR
+      <foreach collection="labels" index="index" item="label" open=" (" separator=" OR " close=")">
+        (worklabel LIKE CONCAT('%', CONCAT(#{label}, '%')))
+      </foreach>
+    </if>
+    <!--<if test="label != null and label != ''">-->
+      <!--or #{label}-->
+    <!--</if>-->
+    <if test="freePrice==0">
+      AND price &lt;=0
+    </if>
+    <if test="type != null and type != ''">
+      AND workstype in (select DISTINCT keyvalue from tb_dict where uid in (SELECT uid from tb_dict WHERE locate(keyvalue,#{type})) or parentid in (SELECT uid from tb_dict WHERE locate(keyvalue,#{type})))
+    </if>
+    <if test="orderField =='price'">
+      order by price desc
+    </if>
+    <if test="orderField =='downcount'">
+      order by downcount desc
+    </if>
+    <if test="orderField =='favcount'">
+      order by favcount desc
+    </if>
+    <if test="orderField =='ticknums'">
+      order by ticknums desc
+    </if>
+    <if test="orderField =='uptime'">
+      order by uptime desc
+    </if>
+    <!--<if test="orderField != null and orderField != ''">-->
+      <!--order by ${orderField} DESC-->
+    <!--</if>-->
+    <if test="count != null and count != '0'">
+      LIMIT #{offset},#{count}
+    </if>
+  </select>
+  <!--修改作品原图地址-->
+  <update id="updateworksurl"  parameterType="pd">
+    update tb_works
+    set worksurl = #{worksurl}
+    imgsize = #{imgsize},
+    imgformart = #{imgformart},
+    where uid = #{uid}
+  </update>
+  <update id="updateworksurls"  parameterType="pd">
+    update tb_works
+    set uptime = #{uptime}
+    where uid = #{uid}
+  </update>
+  <!--修改Works水印图地址和缩略图-->
+  <update id="updateWorkSamllurlandWatermakeurl" parameterType="pd">
+    update tb_works
+    set samllurl = #{samllurl},
+    watermakeurl = #{watermakeurl},
+    dpinum = #{dpinum}
+    where uid = #{uid}
+  </update>
+  <!--修改作品下载量-->
+  <update id="updateWorkDownloadCount" parameterType="pd">
+    update tb_works
+    set downcount = #{downcount}
+    where uid = #{uid}
+  </update>
+  <!--添加作品浏览足迹记录-->
+  <update id="UpdateWoksTrcknum" parameterType="java.lang.String">
+  update tb_works
+    set ticknums = ticknums+1
+    where uid = #{uid};
+  </update>
+</mapper>

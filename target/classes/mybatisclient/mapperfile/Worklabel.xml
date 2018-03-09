@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WorklabelMapper">
+  <resultMap id="BaseResultMap" type="Worklabel">
+    <id column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="labelname" jdbcType="VARCHAR" property="labelname" />
+    <result column="labelnum" jdbcType="INTEGER" property="labelnum" />
+    <result column="codeid" jdbcType="VARCHAR" property="codeid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, labelname, labelnum, codeid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_worklabel
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_worklabel
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hnqj.model.Worklabel">
+    insert into tb_worklabel (uid, labelname, labelnum,
+      codeid)
+    values (#{uid,jdbcType=VARCHAR}, #{labelname,jdbcType=VARCHAR}, #{labelnum,jdbcType=INTEGER}, 
+      #{codeid,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hnqj.model.Worklabel">
+    update tb_worklabel
+    set labelname = #{labelname,jdbcType=VARCHAR},
+      labelnum = #{labelnum,jdbcType=INTEGER},
+      codeid = #{codeid,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <!--通过作品分类value查询数据-->
+  <select id="getWorksForCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_worklabel
+    where codeid = #{codeid,jdbcType=VARCHAR}
+  </select>
+</mapper>

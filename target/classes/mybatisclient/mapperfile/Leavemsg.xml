@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LeavemsgMapper">
+  <resultMap id="BaseResultMap" type="Leavemsg">
+    <id column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="msgContent" jdbcType="VARCHAR" property="msgcontent" />
+    <result column="msgtime" jdbcType="TIMESTAMP" property="msgtime" />
+    <result column="replyuserid" jdbcType="VARCHAR" property="replyuserid" />
+    <result column="replycontent" jdbcType="VARCHAR" property="replycontent" />
+    <result column="replytime" jdbcType="TIMESTAMP" property="replytime" />
+    <result column="workid" jdbcType="VARCHAR" property="workid" />
+    <result column="merchid" jdbcType="VARCHAR" property="merchid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, userid, msgContent, msgtime, replyuserid, replycontent, replytime,workid,merchid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_leavemsg
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_leavemsg
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <!--作品留言、举报投诉-->
+  <insert id="addLeavemsg" parameterType="pd">
+    insert into tb_leavemsg (uid, userid, msgContent,
+      msgtime, replyuserid, replycontent, 
+      replytime,workid,merchid)
+    values (#{uid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{msgcontent,jdbcType=VARCHAR}, 
+      #{msgtime,jdbcType=TIMESTAMP}, #{replyuserid,jdbcType=VARCHAR}, #{replycontent,jdbcType=VARCHAR}, 
+      #{replytime,jdbcType=TIMESTAMP},#{workid,jdbcType=VARCHAR},#{merchid,jdbcType=VARCHAR})
+  </insert>
+  <!--作品留言、投诉受理-->
+  <update id="updateLeavemsgStatu" parameterType="java.lang.String">
+  update tb_leavemsg
+  set replycontent = '1'
+  where uid=#{uid}
+  </update>
+  <!--根据作品ID获取评论信息-->
+  <select id="getLeavemsgForWorkId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_leavemsg
+    where workid = #{workid,jdbcType=VARCHAR}
+  </select>
+</mapper>

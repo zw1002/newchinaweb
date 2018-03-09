@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AccountMapper">
+  <resultMap id="BaseResultMap" type="Account">
+    <id column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="passwd" jdbcType="VARCHAR" property="passwd" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="state" jdbcType="SMALLINT" property="state" />
+    <result column="usertype" jdbcType="SMALLINT" property="usertype" />
+    <result column="usemobile" jdbcType="SMALLINT" property="usemobile" />
+    <result property="extend_1" jdbcType="INTEGER" column="extend_1" />
+    <result property="extend_2" jdbcType="VARCHAR" column="extend_2" />
+    <result property="extend_3" jdbcType="VARCHAR" column="extend_3" />
+    <result property="extend_4" jdbcType="VARCHAR" column="extend_4" />
+    <result property="extend_5" jdbcType="VARCHAR" column="extend_5" />
+    <result property="extend_6" jdbcType="VARCHAR" column="extend_6" />
+    <result property="extend_7" jdbcType="VARCHAR" column="extend_7" />
+    <result property="extend_8" jdbcType="VARCHAR" column="extend_8" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, account, passwd, userid, state, usertype, usemobile,  extend_1,  extend_2,  extend_3,  extend_4,  extend_5,  extend_6,  extend_7,  extend_8
+  </sql>
+  <select id="getAccountForId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_account
+    where userid = #{userid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_account
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="addAccount" parameterType="pd">
+    insert into tb_account (uid, account, passwd,
+      userid, state, usertype,
+      usemobile
+    <if test="extend_1 != null and extend_1 != ''">
+      ,extend_1</if>
+    <if test="extend_2 != null and extend_2 != ''">
+      ,  extend_2</if>
+    <if test="extend_3 != null and extend_3 != ''">
+      ,  extend_3</if>
+    <if test="extend_4 != null and extend_4 != ''">
+      ,  extend_4</if>
+    <if test="extend_5 != null and extend_5 != ''">
+      ,  extend_5</if>
+    <if test="extend_6 != null and extend_6 != ''">
+      ,  extend_6</if>
+    <if test="extend_7 != null and extend_7 != ''">
+      ,  extend_7</if>
+    <if test="extend_8 != null and extend_8 != ''">
+      ,  extend_8</if>
+      )
+    values (#{uid,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR}, 
+      #{userid,jdbcType=VARCHAR}, #{state,jdbcType=SMALLINT}, #{usertype,jdbcType=SMALLINT}, 
+      #{usemobile,jdbcType=SMALLINT}
+    <if test="extend_1 != null and extend_1 != ''">
+      , #{extend_1,jdbcType=INTEGER}</if>
+    <if test="extend_2 != null and extend_2 != ''">
+      , #{extend_2,jdbcType=VARCHAR}</if>
+    <if test="extend_3 != null and extend_3 != ''">
+      ,#{extend_3,jdbcType=VARCHAR}</if>
+    <if test="extend_4 != null and extend_4 != ''">
+      , #{extend_4,jdbcType=VARCHAR}</if>
+    <if test="extend_5 != null and extend_5 != ''">
+      , #{extend_5,jdbcType=VARCHAR}</if>
+    <if test="extend_6 != null and extend_6 != ''">
+      , #{extend_6,jdbcType=VARCHAR}</if>
+    <if test="extend_7 != null and extend_7 != ''">
+      ,#{extend_7,jdbcType=VARCHAR}</if>
+    <if test="extend_8 != null and extend_8 != ''">
+      , #{extend_8,jdbcType=VARCHAR}</if>
+       )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hnqj.model.Account">
+    update tb_account
+    set account = #{account,jdbcType=VARCHAR},
+      passwd = #{passwd,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=VARCHAR},
+      state = #{state,jdbcType=SMALLINT},
+      usertype = #{usertype,jdbcType=SMALLINT},
+      usemobile = #{usemobile,jdbcType=SMALLINT}
+    <if test="extend_1 != null and extend_1 != ''">
+      , extend_1= #{extend_1,jdbcType=INTEGER}</if>
+    <if test="extend_2 != null and extend_2 != ''">
+      , extend_2= #{extend_2,jdbcType=VARCHAR}</if>
+    <if test="extend_3 != null and extend_3 != ''">
+      ,extend_3= #{extend_3,jdbcType=VARCHAR}</if>
+    <if test="extend_4 != null and extend_4 != ''">
+      , extend_4= #{extend_4,jdbcType=VARCHAR}</if>
+    <if test="extend_5 != null and extend_5 != ''">
+      , extend_5= #{extend_5,jdbcType=VARCHAR}</if>
+    <if test="extend_6 != null and extend_6 != ''">
+      , extend_6= #{extend_6,jdbcType=VARCHAR}</if>
+    <if test="extend_7 != null and extend_7 != ''">
+      ,extend_7= #{extend_7,jdbcType=VARCHAR}</if>
+    <if test="extend_8 != null and extend_8 != ''">
+      , extend_8=#{extend_8,jdbcType=VARCHAR}</if>
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <!--校验账号唯一性-->
+  <select id="getAccountforAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_account
+    where account = #{account,jdbcType=VARCHAR}
+  </select>
+  <!--通过用户ID查询-->
+  <select id="getAccountForUsreId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_account
+    where userid = #{userid,jdbcType=VARCHAR}
+  </select>
+  <!--修改密码-->
+  <update id="updatePassByAccount" parameterType="pd">
+    update tb_account
+    set passwd = #{passwd}
+    where account = #{account}
+  </update>
+</mapper>
