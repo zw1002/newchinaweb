@@ -69,7 +69,7 @@
  function subEvaluate(workid){
     var content=$("#"+workid+"ss").val();
      $.ajax({
-         url: "<%=basePath%>/member/addLeaveMsg.do",
+         url: "<%=basePath%>/member/addComment.do",
          type: "POST",
          data: {
              workid: workid,
@@ -77,10 +77,10 @@
          },
          success: function (data) {
              if(data!=="failed"){
-                 successInfo("评论成功!");
+                 alert("评论成功!");
                  $("#"+workid+"ss").val("");
              }else{
-                 errorInfo("评论失败");
+                 alert("评论失败");
              }
          }
      });
@@ -234,7 +234,7 @@
                     <li id="uploadwork"><a class="mem_icon1" href="#" onclick="toUpload()">上传作品</a></li>
                     <li><a class="mem_icon9" href="#" onclick="personWorks()">我的作品</a></li>
                     <li><a class="mem_icon9 active" href="<%=basePath%>/personalcenter/toDownload.do" onclick="persoDownload()">我的下载</a></li>
-                    <li><a class="mem_icon2 active" href="<%=basePath%>/qiutu/toQiutu.do">求助求图</a></li>
+                    <li><a class="mem_icon2" href="<%=basePath%>/qiutu/toQiutu.do">求助求图</a></li>
                     <li><a class="mem_icon2" active href="#" onclick="toCollection()">收藏</a></li>
                     <li><a class="mem_icon4" href="#" onclick="toTransaction()">交易</a></li>
                     <li><a class="mem_icon7" href="#" onclick="toWithdrawals()">提现</a></li>

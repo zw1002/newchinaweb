@@ -1,14 +1,8 @@
 package com.hnqj.controller;
 import com.hnqj.core.PageData;
 import com.hnqj.core.ResultUtils;
-import com.hnqj.model.Leavemsg;
-import com.hnqj.model.Merch;
-import com.hnqj.model.Userinfo;
-import com.hnqj.model.Works;
-import com.hnqj.services.LeavemsgServices;
-import com.hnqj.services.MerchServices;
-import com.hnqj.services.UserinfoServices;
-import com.hnqj.services.WorksServices;
+import com.hnqj.model.*;
+import com.hnqj.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +28,8 @@ public class MemberController extends BaseController{
     WorksServices worksServices;
     @Autowired
     MerchServices merchServices;
+    @Autowired
+    CommentServices commentServices;
     //跳转到会员中心页面
     @RequestMapping(value = "/toMember.do")
     public String toMember(){
@@ -46,27 +42,27 @@ public class MemberController extends BaseController{
      * @param response
      * @return
      */
-    @RequestMapping("/addLeaveMsg.do")
-    public String addLeaveMsg(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("addLeaveMsg");
+    @RequestMapping("/addComment.do")
+    public String addComment(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("addComment");
         try{
             String workid = request.getParameter("workid") == null ? "" : request.getParameter("workid");
             String content = request.getParameter("content") == null ? "" : request.getParameter("content");
             PageData pageData = new PageData();
             pageData.put("uid", UUID.randomUUID().toString());
-            pageData.put("workid",workid);
-            pageData.put("msgcontent",content);
-            pageData.put("userid",getUser().getUid());
-            pageData.put("msgtime",new Date());
-            pageData.put("replycontent",0);
-            int flag=leavemsgServices.addLeavemsg(pageData);
+            pageData.put("worksid",workid);
+            pageData.put("commentinfo",content);
+            pageData.put("commentuserid",getUser().getUid());
+            pageData.put("commenttime",new Date());
+            pageData.put("delflg",0);
+            int flag=commentServices.addComment(pageData);
             if(flag == 1){
                 ResultUtils.writeSuccess(response);
             }else{
                 ResultUtils.writeFailed(response);
             }
         }catch (Exception e){
-            logger.error("addLeaveMsg e="+e.getMessage());
+            logger.error("addComment e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;
@@ -78,28 +74,26 @@ public class MemberController extends BaseController{
      * @param response
      * @return
      */
-    @RequestMapping("/getLeaveMsg.do")
-    public String getLeaveMsg(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("getLeaveMsg");
+    @RequestMapping("/getComment.do")
+    public String getComment(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("getComment");
         try{
             String uid = request.getParameter("uid") == null ? "" : request.getParameter("uid");
-            List<Leavemsg> leavemsgList=leavemsgServices.getLeavemsgForWorkId(uid);
+            List<Comment> commentList=commentServices.getCommentForWorkId(uid);
             List<Map<String, Object>> hashMaps=new ArrayList<>();
-            for(Leavemsg leavemsg:leavemsgList){
+            for(Comment comment:commentList){
                 Map<String, Object> map = new HashMap<>();
-                Works works=worksServices.getWorksforId(uid);
-                Merch merch=merchServices.getMerchforId(works.getMerchid());
-                Userinfo userinfo=userinfoServices.getUserinfoforId(merch.getUserinfouid());
+                Userinfo userinfo=userinfoServices.getUserinfoforId(comment.getCommentuserid());
                 map.put("userid",userinfo.getUid());
                 map.put("username",userinfo.getFristname());
                 map.put("userpicurl",userinfo.getUsrpicurl());
-                map.put("content",leavemsg.getMsgcontent());
-                map.put("time",leavemsg.getMsgtime());
+                map.put("content",comment.getCommentinfo());
+                map.put("time",comment.getCommenttime());
                 hashMaps.add(map);
             }
             ResultUtils.write(response,toDateTimeJson(hashMaps));
         }catch (Exception e){
-            logger.error("getLeaveMsg e="+e.getMessage());
+            logger.error("getComment e="+e.getMessage());
             ResultUtils.writeFailed(response);
         }
         return null;

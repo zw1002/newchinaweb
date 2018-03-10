@@ -85,4 +85,16 @@ protected final Log logger = LogFactory.getLog(getClass());
 	}
 	 return commentList; 
 	}
+
+	public List<Comment> getCommentForWorkId(String uid) {
+		logger.info("根据作品ID查询所有Comment");
+		List<Comment>	commentList=null;
+		try {
+			commentList = (List<Comment>) daoSupport.findForList("CommentMapper.getCommentForWorkId",uid);
+		}catch (Exception e){
+			e.printStackTrace();
+			commentList=null;
+		}
+		return commentList;
+	}
 }

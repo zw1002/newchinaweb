@@ -307,7 +307,7 @@
     function getLeavelmsg(){
         var uid=$("#uid").val();
         $.ajax({
-            url: "<%=basePath%>/member/getLeaveMsg.do",
+            url: "<%=basePath%>/member/getComment.do",
             type: "POST",
             data: {
                 uid: uid
