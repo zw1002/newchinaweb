@@ -362,6 +362,8 @@
 				$(".layui-layer").css("top","200px");
 				return false;
 			}
+			$("#subfabu").text("发布中");
+			$("#subfabu").css("disabled",true);
 			fabu();
 		}
 		function fabu(){
@@ -647,6 +649,7 @@
 
 									</div>
 								</div>
+								<!--
 								<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
 									<legend><span style="color: #C9302C;">*</span>请确认您的联系方式，以便及时沟通</legend>
 								</fieldset>
@@ -667,6 +670,7 @@
 									</div>
 
 								</div>
+								-->
 								<div class="jiange"></div>
 								<div class="layui-form-item">
 									<label class="layui-form-label"><span style="color: #C9302C;">*</span>任务分类</label>
@@ -756,7 +760,7 @@
 								-->
 							</form>
 							<div class="anniu">
-								<button onclick="check()" class="layui-btn layui-btn-warm fabu">发布</button>
+								<button id="subfabu" onclick="check()" class="layui-btn layui-btn-warm fabu">发布</button>
 							</div>
 						</ul>
 						<!--我的任务-->

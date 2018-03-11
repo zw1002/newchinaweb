@@ -340,6 +340,7 @@
      }
  }
  function uploadProgress(evt) {
+     $("#jindu").css("display","block");
      if (evt.lengthComputable) {
          var percent = Math.round(evt.loaded * 100 / evt.total);
          document.getElementById('progress').innerHTML = percent.toFixed(2) + '%';
@@ -359,7 +360,6 @@
      /* 服务器端返回响应时候触发event事件*/
      //alert(evt.target.responseText);
      //document.getElementById('upFileUrll').innerHTML = evt.target.responseText;
-     $("#jindu").css("display","block");
      var msg=eval("("+evt.target.responseText+")");
      var fd = new FormData();
      var workstype=$("#workstype").val();

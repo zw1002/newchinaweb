@@ -92,6 +92,7 @@
     select uid from tb_dict where keyvalue = #{type}
     )
     )
+    and displayflag = '2'
     order by downcount desc
     <if test="count != null and count != 0">
       LIMIT #{offset},#{count}

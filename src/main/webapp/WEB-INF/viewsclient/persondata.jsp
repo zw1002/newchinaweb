@@ -546,7 +546,6 @@
 						<ul>
 							<form class="layui-form" action="">
 								<div class="layui-form-item">
-
 									<div class="layui-input-block">
 										<div class="layui-input-inline">
 											<select id="sel_LogType">

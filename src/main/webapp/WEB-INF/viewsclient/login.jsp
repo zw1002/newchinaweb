@@ -87,7 +87,7 @@
                     +'<div class="layui-form-item layui-form-text"><label style="width: 112px" class="layui-form-label">新密码：</label><div class="layui-input-block">'
                     +'<input type="password" style="width:50%;margin-left: 30px" id="newpassword" name="newpassword" class="layui-input"></div> </div>'
                     +' <div class="layui-form-item layui-form-text"><label style="margin-left: 32px" class="layui-form-label">验证码：</label><div style="width: 775px;margin-left: 110px" class="lay ui-input-block">'
-                    +'<input style="width:25%;margin-left: 32px" id="code" name="code" class="layui-input"><a style="margin-top:115px;margin-right: 30px;width: 100px;height: 34px" href="#" onclick="getSMS()" class="yzm_btn">获取验证码</a>'
+                    +'<input style="width:25%;margin-left: 32px" id="code" name="code" class="layui-input"><a style="margin-top:167px;margin-right: 30px;width: 100px;height: 34px" href="#" onclick="getSMS()" class="yzm_btn">获取验证码</a>'
                     +'</div></div></form>'
                     ,btn: '提交'
                     ,btnAlign: 'c' //按钮居中

@@ -325,6 +325,15 @@
         var uid="${userinfo.getUid()}";
         document.location.href = '<%=basePath%>/homepage/toHomepage.do?uid='+uid;
     }
+    function toUploadss(){
+        var firstname="${userinfo.getFristname()}";
+        if(firstname != ""){
+            var uid="${userinfo.getUid()}";
+            document.location.href = '<%=basePath%>/homepage/toHomepage.do?uid='+uid;
+        }else{
+            document.location.href = '<%=basePath%>/signin/login.do';
+        }
+    }
 </script>
 
 <div class="hei50px">
@@ -518,7 +527,7 @@
             </div><!-- design_list -->
             <div class="sj_fr">
                 <div class="hong_tit xp_titd col_djxp"><h2>新品发布</h2> <a href="#" onclick="toMultimedia()">更多 ></a></div>
-                <div class="xpfb_img"> <a href="#"><img src="<%=basePath%>/static/images/xpfb_pic.png" /></a></div>
+                <div class="xpfb_img"> <a onclick="toUploadss()" href="#"><img src="<%=basePath%>/static/images/xpfb_pic.png" /></a></div>
             </div><!-- sj_fr -->
 
         </div><!-- hei380px -->

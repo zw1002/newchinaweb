@@ -487,6 +487,7 @@
 				});
 				getSubmission();
 				getGraphDetail();
+				getHotGraph();
 				getLeavingMsg();
 			});
 			//跳转到首页
@@ -567,6 +568,47 @@
 						}
 					}
 				});
+					$.ajax({
+						url: "<%=basePath%>/graph/getCollectionGraph.do",
+						type: "POST",
+						success: function (data) {
+							if(data!=="failed"){
+								var msg=eval("("+data+")");
+								for(var i=0;i<msg.length;i++){
+									if(uid == msg[i].graphid){
+										$("#collectionGraph").text("已收藏");
+										$("#collectionGraph").addClass("yishoucang");
+									}
+								}
+							}
+						}
+					});
+			}
+			//热门任务
+			function getHotGraph(){
+				var count=10;
+				$.ajax({
+					url: "<%=basePath%>/helpd/getHotGraph.do",
+					type: "POST",
+					data:{
+						count:count
+					},
+					success: function (data) {
+						if(data!=="failed"){
+							var msg = eval("(" + data + ")");
+							var res = "";
+							for(var i=0;i<msg.length;i++){
+								if(i+1 != msg.length){
+									res += '<tr> <td> <span class="chanpinjia">￥'+msg[i].moneyreward+'</span> <span class="chanpinnei">'+msg[i].graphtitle+'</span> </td> <td>'
+											+'<span class="chanpinjia">￥'+msg[j].moneyreward+'</span> <span class="chanpinnei">'+msg[j].graphtitle+'</span> </td> </tr>';
+								}else{
+									res += '<tr> <td> <span class="chanpinjia">￥'+msg[i].moneyreward+'</span> <span class="chanpinnei">'+msg[i].graphtitle+'</span> </td></tr>';
+								}
+							}
+							$("#hotGraph").append(res);
+						}
+					}
+				});
 			}
 			//获取稿件数据
 			function getSubmission(){
@@ -574,6 +616,7 @@
 				$.ajax({
 					url: "<%=basePath%>/graph/getSubmissionByid.do",
 					type: "POST",
+					async:false,
 					data: {
 						uid: uid
 					},
@@ -587,7 +630,7 @@
 								if(msg[i].uid == msg[i].bidSubmission){
 									str +='<div class="pingjia"> <div class="xinxi"> <div class="layui-inline touxiang"> <img src="<%=basePath%>'+msg[i].submissionuserpicurl+'" class="layui-circle"> </div>'
 											+'<div class="layui-inline pinglun"> <span class="yonghu">'+msg[i].submissionusername+'</span>'
-											+'<div class="shijian"><button id="'+uid+'" onclick=collectionSubmission("'+msg[i].uid+'") class="layui-btn quanbu" style="margin-top: 15px;">收藏</button><button style="display:none" onclick=draftSelection("'+msg[i].uid+'") class="layui-btn quanbus" style="margin-top: 15px;">选稿</button></div>'
+											+'<div class="shijian"><button id="'+msg[i].uid+'" onclick=collectionSubmission("'+msg[i].uid+'") class="layui-btn quanbu" style="margin-top: 15px;">收藏</button><button style="display:none" onclick=draftSelection("'+msg[i].uid+'") class="layui-btn quanbus" style="margin-top: 15px;">选稿</button></div>'
 											+'<p class="neirong"><span style="margin-left:0px">投稿时间&nbsp;:&nbsp;'+msg[i].uptime+'</span></p></div></div>'
 											+'<div class="layui-inline tupian"><img style="width:100px;height:100px" class="tubiao" src="<%=basePath%>/static/images/zhongbaio.png"><img src="<%=basePath%>'+msg[i].watermakeurl+'"><div class="layui-collapse" lay-filter="test">'
 											+'<div class="layui-colla-item "><h2 class="layui-colla-title">'+msg[i].worksname+'</h2>'
@@ -596,7 +639,7 @@
 								}else{
 									str +='<div class="pingjia"> <div class="xinxi"> <div class="layui-inline touxiang"> <img src="<%=basePath%>'+msg[i].submissionuserpicurl+'" class="layui-circle"> </div>'
 											+'<div class="layui-inline pinglun"> <span class="yonghu">'+msg[i].submissionusername+'</span>'
-											+'<div class="shijian"><button id="'+uid+'" onclick=collectionSubmission("'+msg[i].uid+'") class="layui-btn quanbu" style="margin-top: 15px;">收藏</button><button style="display:none" onclick=draftSelection("'+msg[i].uid+'") class="layui-btn quanbus" style="margin-top: 15px;">选稿</button></div>'
+											+'<div class="shijian"><button id="'+msg[i].uid+'" onclick=collectionSubmission("'+msg[i].uid+'") class="layui-btn quanbu" style="margin-top: 15px;">收藏</button><button style="display:none" onclick=draftSelection("'+msg[i].uid+'") class="layui-btn quanbus" style="margin-top: 15px;">选稿</button></div>'
 											+'<p class="neirong"><span style="margin-left:0px">投稿时间&nbsp;:&nbsp;'+msg[i].uptime+'</span></p></div></div>'
 											+'<div class="layui-inline tupian"><img src="<%=basePath%>'+msg[i].watermakeurl+'"><div class="layui-collapse" lay-filter="test">'
 											+'<div class="layui-colla-item "><h2 class="layui-colla-title">'+msg[i].worksname+'</h2>'
@@ -606,6 +649,24 @@
 							}
 							$("#submission").append('<div class="site-demo-button" style="margin-bottom: 0;"> <button class="layui-btn quanbu">全部('+msg.length+')</button></div>');
 							$("#submission").append(str);
+						}
+						for(var i=0;i<msg.length;i++){
+							$.ajax({
+								url: "<%=basePath%>/graph/getCollectionSubmission.do",
+								type: "POST",
+								async:false,
+								success: function (data) {
+									if(data!=="failed"){
+										var mag = eval("(" + data + ")");
+										for(var j=0;j<mag.length;j++){
+											if(msg[i].uid == mag[j].submissionid){
+												alert("www");
+												$("#"+mag[j].submissionid).text("已收藏");
+											}
+										}
+									}
+								}
+							});
 						}
 					}
 				});
@@ -745,6 +806,7 @@
 									$(".layui-layer").css("top","200px");
 									return false;
 								}
+								$("#layui-layer-btn0").css("disable",true);
 								uploadFile();
 							}
 						});
@@ -765,6 +827,7 @@
 				});
 			});
 			function uploadFile() {
+
 				$("#jindu1").css("display","block");
 				var fd = new FormData();
 				var file2=document.getElementById('file2').files[0];
@@ -982,63 +1045,8 @@
 								<th></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="hotGraph">
 
-							<tr>
-								<td>
-									<span class="chanpinjia">￥3200</span>
-									<span class="chanpinnei">日用产品包装设计</span>
-								</td>
-								<td>
-									<span class="chanpinjia">￥3200</span>
-									<span class="chanpinnei">日用产品包装设计</span>
-								</td>
-								
-							</tr>
-							<tr>
-								<td>
-									<span class="chanpinjia">￥3200</span>
-									<span class="chanpinnei">日用产品包装设计</span>
-								</td>
-								<td>
-									<span class="chanpinjia">￥3200</span>
-									<span class="chanpinnei">日用产品包装设计</span>
-								</td>
-								
-							</tr>
-							<tr>
-								<td>
-									<span class="chanpinjia">￥3200</span>
-									<span class="chanpinnei">日用产品包装设计</span>
-								</td>
-								<td>
-									<span class="chanpinjia">￥3200</span>
-									<span class="chanpinnei">日用产品包装设计</span>
-								</td>
-								
-							</tr>
-							<tr>
-								<td>
-									<span class="chanpinjia">￥3200</span>
-									<span class="chanpinnei">日用产品包装设计</span>
-								</td>
-								<td>
-									<span class="chanpinjia">￥3200</span>
-									<span class="chanpinnei">日用产品包装设计</span>
-								</td>
-								
-							</tr>
-							<tr>
-								<td>
-									<span class="chanpinjia">￥3200</span>
-									<span class="chanpinnei">日用产品包装设计</span>
-								</td>
-								<td>
-									<span class="chanpinjia">￥3200</span>
-									<span class="chanpinnei">日用产品包装设计</span>
-								</td>
-								
-							</tr>
 						</tbody>
 					</table>
 				</div>

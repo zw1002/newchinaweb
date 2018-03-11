@@ -58,8 +58,9 @@
                  $("#role").append(res);
                  $("#uploadwork").css("display","none");
              }else{
-                 $("#balance").text(msg.merchscroe);
-                 $("#withcash").text(msg.merchscroe);
+                 var winningbid="${userinfo.getWinningbid()}";
+                 $("#balance").text(Number(msg.merchscroe)+Number(winningbid));
+                 $("#withcash").text(Number(msg.merchscroe)+Number(winningbid));
                  $("#scroe").text(msg.merchscroe);
                  if(msg.statu == 0){
                  $("#role").html("");
